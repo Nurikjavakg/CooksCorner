@@ -2,6 +2,7 @@ package neo.cookscorner.repository.jdbcTemplate;
 
 import lombok.RequiredArgsConstructor;
 import neo.cookscorner.dto.recipe.RecipeResponse;
+import neo.cookscorner.dto.user.UserResponse;
 import neo.cookscorner.enums.Difficulty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -88,7 +89,7 @@ public class RecipeJDBCTemplate {
                     left join public.favorites f on r.recipe_id = f.recipe_recipe_id\s
                     left join recipes_images ri on r.recipe_id = ri.recipe_id
                     left join images i on ri.image_id = i.id
-                where r. = 'Dinner'
+                where r.category_of_meal = 'Dinner'
                 group by r.recipe_id, u.name, r.recipe_name, i. url_image
                      """;
         List<RecipeResponse> recipeResponses = jdbcTemplate.query(sql, this::getRecipeByCategoryBreakfast);
@@ -144,4 +145,30 @@ public class RecipeJDBCTemplate {
                 .orElse(new RecipeResponse());
     }
 
+    public Page<RecipeResponse> getRecipesFromAuthor(Pageable pageable, Long authorId) {
+        String sql = """
+        select
+            r.recipe_id as recipeId,
+            r.recipe_name as recipeName,
+            u.name as name,
+            cast(count(l) as int) as likeCount,
+            cast(count(f) as int) as favoriteCount,
+            i.url_image as imageUrl
+        from
+            recipes r
+            left join likes l on r.recipe_id = l.recipe_recipe_id
+            left join public.users u on u.user_id = r.owner_user_id
+            left join public.favorites f on r.recipe_id = f.recipe_recipe_id
+            left join recipes_images ri on r.recipe_id = ri.recipe_id
+            left join images i on ri.image_id = i.id
+        where
+            r.owner_user_id = ?
+        group by
+            r.recipe_id, u.name, r.recipe_name, i.url_image
+    """;
+
+        List<RecipeResponse> recipeResponses = jdbcTemplate.query(sql, this::getRecipeByCategoryBreakfast, authorId);
+        assert recipeResponses != null;
+        return new PageImpl<>(recipeResponses, pageable, recipeResponses.size());
+    }
 }
