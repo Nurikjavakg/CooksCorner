@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         email = "nurmukhamedalymbaiuulu064@gmail.com",
                         url = "https://neobis-front-auth-mu.vercel.app"
                 ),
-                title = "Lorby API",
-                description = "OpenApi documentation for Lorby Auth Project",
+                title = "CooksCorner API",
+                description = "OpenApi documentation for CooksCorner Project",
                 version = "0.0.1"
         ),
         servers = {

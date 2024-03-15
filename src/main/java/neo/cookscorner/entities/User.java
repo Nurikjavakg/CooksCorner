@@ -31,6 +31,11 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.REFRESH})
+    private List<Recipe> recipes;
     @OneToMany
     @JoinTable(
             name = "users_images",

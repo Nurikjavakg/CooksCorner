@@ -25,6 +25,10 @@ public class Like {
                           CascadeType.MERGE,
                           CascadeType.REFRESH})
     private User user;
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
+    private Recipe recipe;
    // @ManyToOne
    // private Product product;
 }

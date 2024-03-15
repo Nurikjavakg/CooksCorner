@@ -25,6 +25,8 @@ public class Favorite {
                             CascadeType.MERGE,
                             CascadeType.REFRESH})
     private User user;
-    // @ManyToOne
-    // private Product product;
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
+    private Recipe recipe;
 }

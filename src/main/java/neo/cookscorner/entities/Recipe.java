@@ -2,9 +2,9 @@ package neo.cookscorner.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import neo.cookscorner.enums.CategoryOfMeal;
+import neo.cookscorner.enums.Difficulty;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(name = "recipes")
@@ -24,8 +24,35 @@ public class Recipe {
     private Long recipeId;
     private String recipeName;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
+    @Enumerated(EnumType.STRING)
+    private CategoryOfMeal categoryOfMeal;
+    private String preparationTime;
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH,
+            CascadeType.DETACH,
+            CascadeType.MERGE},fetch=FetchType.LAZY)
+    private User choose;
+
     @OneToMany( mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
+    @ManyToOne(cascade = {
+            CascadeType.REFRESH,
+            CascadeType.DETACH,
+            CascadeType.MERGE},fetch=FetchType.LAZY)
+    private User owner;
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.REFRESH})
+    private List<Like> likes;
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.REFRESH})
+    private List<Favorite> favorites;
+
     @OneToMany
     @JoinTable(
             name = "recipes_images",

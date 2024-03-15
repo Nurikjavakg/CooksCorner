@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "ingredients")
 @Getter
@@ -22,8 +24,8 @@ public class Ingredient {
             sequenceName = "ingredients_seq",
             allocationSize = 1)
     private Long ingredientId;
-    private String name;
-    private String quantity;
+    private String names;
+    private String quantities;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
