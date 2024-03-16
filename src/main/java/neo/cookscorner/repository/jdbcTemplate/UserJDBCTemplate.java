@@ -17,6 +17,8 @@ public class UserJDBCTemplate {
         return new UserResponse(
                 rs.getString("userName"),
                 rs.getInt("sumRecipe"),
+                rs.getInt("sumFollowing"),
+                rs.getInt("sumFollowers"),
                 rs.getString("biography"),
                 rs.getString("userImageUrl")
         );
@@ -25,17 +27,22 @@ public class UserJDBCTemplate {
 
     public UserResponse getAuthorById(Long authorId) {
         String sql = """
-        
-        select u.name as userName, 
-                count(r.recipe_id) as sumRecipe, 
-                u.biography, i.url_image as userImageUrl
-        from public.users u
-        left join recipes r on u.user_id = r.owner_user_id
-        left join public.users_images ui on u.user_id = ui.user_id
-        left join images i on ui.image_id = i.id
-        where u.user_id = ?
-        group by u.name, u.biography, i.url_image
-        """;
+           select u.name as userName,
+             count(distinct r.recipe_id) as sumRecipe,
+             u.biography,
+             i.url_image as userImageUrl,
+             count(distinct uf.following) as sumFollowing,
+             count(distinct f.followers) as sumFollowers
+             from users u
+             left join recipes r on u.user_id = r.owner_user_id
+             left join users_images ui on u.user_id = ui.user_id
+             left join images i on ui.image_id = i.id
+             left join user_following uf on u.user_id = uf.user_user_id
+             left join users f1 on f1.user_id = uf.following
+             left join user_followers f on u.user_id = f.user_user_id
+             left join users f2 on f2.user_id = f.followers
+             where u.user_id = ? group by u.name, u.biography, i.url_image;
+                """;
         return jdbcTemplate.query(sql, this::getUserById, authorId)
                 .stream()
                 .findFirst()

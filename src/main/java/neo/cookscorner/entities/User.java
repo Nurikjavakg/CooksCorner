@@ -31,6 +31,10 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @ElementCollection
+    private List<Long> following;
+    @ElementCollection
+    private List<Long> followers;
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REMOVE,
@@ -55,6 +59,14 @@ public class User implements UserDetails {
                     CascadeType.REFRESH,
                     CascadeType.REMOVE})
     private List<Like> likes;
+
+    public void addFollowers(User user) {
+        followers.add(user.getUserId());
+    }
+
+    public void addFollowing(User user) {
+        following.add(user.getUserId());
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -34,4 +34,11 @@ public class UserApi {
                                    @RequestParam Long authorId) {
         return userService.getUserById(authorId, currentPage, pageSize);
     }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("/{userId}")
+    @Operation(summary = "Following to user")
+    public SimpleResponse following(@PathVariable Long userId) {
+        return userService.following(userId);
+    }
 }

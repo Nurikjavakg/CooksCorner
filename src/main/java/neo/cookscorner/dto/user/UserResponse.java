@@ -11,13 +11,17 @@ import neo.cookscorner.dto.recipe.PaginationResponse;
 public class UserResponse {
     private String userName;
     private int sumRecipe;
+    private int sumFollowing;
+    private int sumFollowers;
     private String biography;
     private String userImageUrl;
     private PaginationResponse paginationResponse;
 
-    public UserResponse(String userName, int sumRecipe, String biography, String userImageUrl) {
+    public UserResponse(String userName, int sumRecipe, int sumFollowing, int sumFollowers, String biography, String userImageUrl) {
         this.userName = userName;
         this.sumRecipe = sumRecipe;
+        this.sumFollowing = sumFollowing;
+        this.sumFollowers = sumFollowers;
         this.biography = biography;
         this.userImageUrl = userImageUrl;
     }

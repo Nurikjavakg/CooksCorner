@@ -10,4 +10,5 @@ import java.util.List;
 public interface UserService {
     SimpleResponse createProfile(UserRequest userRequest, List<MultipartFile> images);
     PaginationResponse getUserById(Long authorId, int currentPage, int pageSize);
+    SimpleResponse following(Long userId);
 }
