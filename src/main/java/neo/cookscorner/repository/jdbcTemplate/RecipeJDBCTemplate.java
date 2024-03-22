@@ -170,4 +170,26 @@ public class RecipeJDBCTemplate {
         assert recipeResponses != null;
         return new PageImpl<>(recipeResponses, pageable, recipeResponses.size());
     }
+
+    public Page<RecipeResponse> findRecipeByName(Pageable pageable, String recipeName) {
+        String sql = """
+                select  r.recipe_id as recipeId,\s
+                r.recipe_name recipeName,\s
+                u.name as name,\s
+                cast(count(l) as int) as likeCount,\s
+                cast(count(f) as int) as favoriteCount,\s
+                i.url_image as imageUrl
+                    from recipes r\s
+                    left join likes l on r.recipe_id = l.recipe_recipe_id
+                    left join public.users u on u.user_id = r.owner_user_id
+                    left join public.favorites f on r.recipe_id = f.recipe_recipe_id\s
+                    left join recipes_images ri on r.recipe_id = ri.recipe_id
+                    left join images i on ri.image_id = i.id
+                where r.recipe_name ILIKE '%' || ? || '%'
+                group by r.recipe_id, u.name, r.recipe_name, i. url_image
+                     """;
+        List<RecipeResponse> recipeResponses = jdbcTemplate.query(sql, this::getRecipeByCategoryBreakfast,recipeName);
+        assert recipeResponses != null;
+        return new PageImpl<>(recipeResponses, pageable, recipeResponses.size());
+}
 }

@@ -20,13 +20,13 @@ public class AuthApi {
 
     private final AuthService userService;
 
-    @PostMapping("/signIn")
+    @PostMapping("/sign_in")
     @Operation(summary = "Sign in to your account")
     public SignInResponse signIn(@RequestBody @Valid SignInRequest signInRequest) {
         return userService.signIn(signInRequest);
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign_up")
     @Operation(summary = "Register", description = "Account registration")
     public SimpleResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return userService.signUp(signUpRequest);

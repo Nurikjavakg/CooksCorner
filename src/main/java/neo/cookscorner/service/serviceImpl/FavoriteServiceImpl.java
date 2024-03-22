@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -45,17 +45,17 @@ public class FavoriteServiceImpl implements FavoriteService {
                     log.info("Recipe with id: " + recipeId + " not found...");
                     return new NotFoundException(String.format("Recipe with id: %s not found...", recipeId));
                 });
-        List<Favorite> favorites = favoriteRepository.findAll();
-        for (Favorite favorite : favorites) {
-            if (favorite.getUser().equals(user) && favorite.getRecipe().equals(recipe)) {
-                favoriteRepository.deleteById(favorite.getId());
+
+        Optional<Favorite> favorite1 = favoriteRepository.findFavoriteByUserUserId(user.getUserId());
+        if(favorite1.isPresent()) {
+            favoriteRepository.deleteById(favorite1.get().getId());
                 log.info("Unfavorited...");
                 return SimpleResponse.builder()
                         .httpStatus(HttpStatus.OK)
                         .message("Unfavorited...")
                         .build();
             }
-        }
+
         Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setRecipe(recipe);

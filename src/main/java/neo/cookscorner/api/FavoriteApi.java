@@ -18,7 +18,7 @@ public class FavoriteApi {
 
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "You can favorite or unfavorite recipe")
-    @PostMapping("/favoriteOrUnFavorite/{recipeId}")
+    @PostMapping("/favorite_or_un_favorite/{recipeId}")
     public SimpleResponse favoriteOrUnFavorite(@PathVariable Long recipeId) {
         return favoriteService.favoriteRecipe(recipeId);
     }

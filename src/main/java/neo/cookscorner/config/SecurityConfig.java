@@ -39,6 +39,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedOrigin("https://neobis-front-auth-mu.vercel.app");
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addExposedHeader("*");
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;

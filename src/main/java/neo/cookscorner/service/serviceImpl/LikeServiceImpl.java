@@ -8,14 +8,15 @@ import neo.cookscorner.entities.Like;
 import neo.cookscorner.entities.Recipe;
 import neo.cookscorner.entities.User;
 import neo.cookscorner.exceptions.NotFoundException;
-import neo.cookscorner.repository.*;
+import neo.cookscorner.repository.LikeRepository;
+import neo.cookscorner.repository.RecipeRepository;
+import neo.cookscorner.repository.UserRepository;
 import neo.cookscorner.service.LikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -45,17 +46,16 @@ public class LikeServiceImpl implements LikeService {
                     return new NotFoundException(String.format("Recipe with id: %s not found...", recipeId));
                 });
 
-        List<Like> findAllLikes = likeRepository.findAll();
-        for(Like like : findAllLikes){
-            if(like.getUser().equals(user) && like.getRecipe().equals(recipe)){
-                likeRepository.deleteById(like.getId());
+            Optional<Like>like1 = likeRepository.findLikeByUserUserId(user.getUserId());
+            if(like1.isPresent()) {
+                likeRepository.deleteById(like1.get().getId());
                 log.info("Disliked...");
                 return SimpleResponse.builder()
                         .httpStatus(HttpStatus.OK)
                         .message("Disliked...")
                         .build();
             }
-        }
+
         Like like = new Like();
         like.setUser(user);
         like.setRecipe(recipe);

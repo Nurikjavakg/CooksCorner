@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import neo.cookscorner.dto.SimpleResponse;
 import neo.cookscorner.dto.recipe.PaginationResponse;
 import neo.cookscorner.dto.recipe.RecipeResponse;
+import neo.cookscorner.dto.user.PaginationResponseUser;
 import neo.cookscorner.dto.user.UserRequest;
 import neo.cookscorner.dto.user.UserResponse;
 import neo.cookscorner.entities.Image;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SimpleResponse createProfile(UserRequest userRequest, List<MultipartFile> images) {
+    public SimpleResponse manageProfile(UserRequest userRequest, List<MultipartFile> images) {
         User user = getAuthFromUser();
         user.setName(userRequest.userName());
         user.setBiography(userRequest.biography());
@@ -109,6 +110,16 @@ public class UserServiceImpl implements UserService {
                 .httpStatus(HttpStatus.OK)
                 .message("Your following successfully sand")
                 .build();
+    }
+
+    @Override
+    public PaginationResponseUser findChefByName(int currentPage, int pageSize, String chefName) {
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        Page<UserResponse> user = userJDBCTemplate.findChefByName(pageable, chefName);
+        return PaginationResponseUser.builder()
+                .userResponse(user.getContent())
+                .currentPage(user.getNumber() + 1)
+                .pageSize(user.getTotalPages()).build();
     }
 
     private void iterateOverPhotos(List<MultipartFile> images, List<Image> tripImages) {

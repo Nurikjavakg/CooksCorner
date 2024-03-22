@@ -72,11 +72,6 @@ public class AuthServiceImpl implements AuthService {
                     return new NotFoundException("The user with the email address " + signInRequest.email() + " was not found!");
                 });
 
-        if (!passwordEncoder.matches(signInRequest.password(), user.getPassword())) {
-            log.info("Invalid password");
-            throw new BadCredentialException("Invalid password");
-        }
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         signInRequest.email(),

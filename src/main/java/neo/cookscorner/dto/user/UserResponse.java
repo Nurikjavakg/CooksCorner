@@ -9,6 +9,7 @@ import neo.cookscorner.dto.recipe.PaginationResponse;
 @Setter
 @NoArgsConstructor
 public class UserResponse {
+    private Long userId;
     private String userName;
     private int sumRecipe;
     private int sumFollowing;
@@ -23,6 +24,12 @@ public class UserResponse {
         this.sumFollowing = sumFollowing;
         this.sumFollowers = sumFollowers;
         this.biography = biography;
+        this.userImageUrl = userImageUrl;
+    }
+
+    public UserResponse(Long userId, String userName, String userImageUrl) {
+        this.userId = userId;
+        this.userName = userName;
         this.userImageUrl = userImageUrl;
     }
 }

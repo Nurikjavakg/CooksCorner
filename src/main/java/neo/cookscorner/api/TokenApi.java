@@ -20,7 +20,7 @@ public class TokenApi {
     private final RefreshTokenService refreshTokenService;
 
     @PermitAll
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh_token")
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response

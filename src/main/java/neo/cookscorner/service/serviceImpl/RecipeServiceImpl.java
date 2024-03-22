@@ -21,10 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -94,34 +92,34 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public PaginationResponse getByCategoryBreakfast(int currentPage, int pageSize) {
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<RecipeResponse> trips = recipeJDBCTemplate.getByCategoryBreakfast(pageable);
-        return PaginationResponse.builder()
-                .recipeResponseList(trips.getContent())
-                .currentPage(trips.getNumber() + 1)
-                .pageSize(trips.getTotalPages()).build();
+    public PaginationResponse getByCategoryId(int categoryId, int currentPage, int pageSize) {
+        return switch (categoryId) {
+            case 1 -> {
+                Page<RecipeResponse> breakfastPage = recipeJDBCTemplate.getByCategoryBreakfast(PageRequest.of(currentPage - 1, pageSize));
+                yield createPaginationResponse(breakfastPage);
+            }
+            case 2 -> {
+                Page<RecipeResponse> dinnerPage = recipeJDBCTemplate.getByCategoryDinner(PageRequest.of(currentPage - 1, pageSize));
+                yield createPaginationResponse(dinnerPage);
+            }
+            case 3 -> {
+                Page<RecipeResponse> lunchPage = recipeJDBCTemplate.getByCategoryLunch(PageRequest.of(currentPage - 1, pageSize));
+                yield createPaginationResponse(lunchPage);
+            }
+            default -> throw new IllegalArgumentException("Invalid category ID: " + categoryId);
+        };
     }
 
-    @Override
-    public PaginationResponse getByCategoryDinner(int currentPage, int pageSize) {
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<RecipeResponse> trips = recipeJDBCTemplate.getByCategoryDinner(pageable);
+    private PaginationResponse createPaginationResponse(Page<RecipeResponse> page) {
         return PaginationResponse.builder()
-                .recipeResponseList(trips.getContent())
-                .currentPage(trips.getNumber() + 1)
-                .pageSize(trips.getTotalPages()).build();
+                .recipeResponseList(page.getContent())
+                .currentPage(page.getNumber() + 1)
+                .pageSize(page.getTotalPages())
+                .build();
     }
 
-    @Override
-    public PaginationResponse getByCategoryLunch(int currentPage, int pageSize) {
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<RecipeResponse> trips = recipeJDBCTemplate.getByCategoryLunch(pageable);
-        return PaginationResponse.builder()
-                .recipeResponseList(trips.getContent())
-                .currentPage(trips.getNumber() + 1)
-                .pageSize(trips.getTotalPages()).build();
-    }
+
+
 
     @Override
     public RecipeResponse getRecipeById(Long recipeId) {
@@ -132,6 +130,16 @@ public class RecipeServiceImpl implements RecipeService {
         recipeResponse.setQuantities(quantities);
         return recipeResponse;
 
+    }
+
+    @Override
+    public PaginationResponse findRecipeByName(int currentPage, int pageSize, String recipeName) {
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        Page<RecipeResponse> recipe = recipeJDBCTemplate.findRecipeByName(pageable, recipeName);
+        return PaginationResponse.builder()
+                .recipeResponseList(recipe.getContent())
+                .currentPage(recipe.getNumber() + 1)
+                .pageSize(recipe.getTotalPages()).build();
     }
 
     private void iterateOverPhotos(List<MultipartFile> images, List<Image> tripImages) {

@@ -19,7 +19,7 @@ public class LikeApi {
 
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "You can like or dislike recipe")
-    @PostMapping("/LikeOrDislike/{recipeId}")
+    @PostMapping("/Like_or_dislike/{recipeId}")
     public SimpleResponse LikeOrDislike(@PathVariable Long recipeId) {
         return likingRecipe.likingRecipe(recipeId);
     }
