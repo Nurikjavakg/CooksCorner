@@ -4,7 +4,7 @@ EXPOSE 49310
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY target/CooksCorner-0.0.1-SNAPSHOT.jar /app/CooksCorner.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "springdemo.jar"]
 
