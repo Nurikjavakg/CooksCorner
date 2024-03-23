@@ -31,4 +31,4 @@ public class AuthApi {
     public SimpleResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return userService.signUp(signUpRequest);
     }
-}
+}''
