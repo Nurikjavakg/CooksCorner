@@ -1,4 +1,4 @@
-FROM amazoncorretto:20
+FROM openjdk:17 as build
 
 EXPOSE 49310
 
