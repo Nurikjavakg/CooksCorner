@@ -125,6 +125,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>cookscorner_repo_docker</finalName>
     </build>
 
 </project>

@@ -27,24 +27,12 @@ jobs:
           mvn clean
           mvn -B package --file pom.xml
 
-      - name: Build Docker Image
-        uses: docker/build-push-action@v5
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          context: .
-          dockerfile: Dockerfile
-          push: false
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner_repo_docker:latest
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner_repo_docker:latest
+            image: nurik345/cookscorner_repo_docker
+            tags: latest
+            registry: docker.io
+            dockerfile: Dockerfile
+            DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
