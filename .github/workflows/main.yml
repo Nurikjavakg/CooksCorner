@@ -31,6 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          dockerfile: Dockerfile
           push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner:today
 
@@ -44,5 +45,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner:today
+
