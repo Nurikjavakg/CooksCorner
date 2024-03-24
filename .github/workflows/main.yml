@@ -30,9 +30,9 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-            image: nurik345/cookscorner_repo_docker
-            tags: latest
-            registry: docker.io
-            dockerfile: Dockerfile
-            DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-            DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          image: nurik345/cookscorner_repo_docker
+          tags: latest
+          registry: docker.io
+          dockerfile: CooksCorner/Dockerfile
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
