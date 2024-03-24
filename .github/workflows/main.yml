@@ -30,9 +30,9 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./CooksCorner
           dockerfile: Dockerfile
-          push: true
+          push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner_repo_docker:latest
 
       - name: Login to Docker Hub
