@@ -2,6 +2,6 @@ FROM openjdk:latest
 
 WORKDIR /usr/src/app
 
-COPY --from=build /app/target/CooksCorner-0.0.1-SNAPSHOT.jar /app/cookscorner
+COPY --from=build /app/target/CooksCorner-0.0.1-SNAPSHOT.jar /app/CooksCorner
 
 CMD ["java", "-jar", "cookscorner_repo_docker.jar"]
