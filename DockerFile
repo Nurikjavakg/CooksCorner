@@ -1,7 +1,13 @@
+FROM AdoptOpenJDK/openjdk17:latest AS build
+
+WORKDIR /app
+COPY . /app
+RUN mvn clean package
+
+# Create the JAR file for the executable jar package
+RUN jar cmf -C /app target/manufaktura-1.0-SNAPSHOT.jar META-INF/MANIFEST.mf
+
 FROM openjdk:latest
 
 WORKDIR /usr/src/app
-
 COPY --from=build /app/target/manufaktura-1.0-SNAPSHOT.jar /app/cookscorner
-
-CMD ["java", "-jar", "cookscorner_repo_docker/manufaktura-1.0-SNAPSHOT.jar"]
