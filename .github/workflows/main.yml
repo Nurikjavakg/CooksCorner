@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Docker image with Dockerfile
         env:
-          DOCKER_FILE: Dockerfile
+        DOCKER_FILE: Dockerfile
         run: |
           mv build/${DOCKER_FILE} /tmp/dockerfile
           docker build -t docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/cookscorner_repo_docker:latest --file /tmp/dockerfile .
