@@ -10,4 +10,4 @@ RUN jar cmf -C /app target/manufaktura-1.0-SNAPSHOT.jar META-INF/MANIFEST.mf
 FROM openjdk:latest
 
 WORKDIR /usr/src/app
-COPY target/CooksCorner-0.0.1-SNAPSHOT.jar /app/cookscorner_repo_docker.jar
+COPY --from=build /app/target/manufaktura-1.0-SNAPSHOT.jar /app/cookscorner
