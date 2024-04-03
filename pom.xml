@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>neo</groupId>
-    <artifactId>CooksCorner</artifactId>
+    <artifactId>cookscorner</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CooksCorner</name>
     <description>CooksCorner</description>
